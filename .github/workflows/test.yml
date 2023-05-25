@@ -23,8 +23,8 @@ jobs:
       - uses: ./
         id: bumped
         with:
-          baseVer: "1.0.1"
-          headVer: "1.0.0"
+          baseVer: "1.0.0"
+          headVer: "1.0.1"
       - run: |
           echo "HEAD version matches BASE version ${{ steps.bumped.outputs.bumped }}"
   not_bumped:
