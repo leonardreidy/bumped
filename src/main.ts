@@ -1,16 +1,44 @@
 import * as core from '@actions/core'
-import {wait} from './wait'
 
-async function run(): Promise<void> {
+interface ServiceVersion {
+  major: number
+  minor: number
+  patch: number
+}
+
+function hasBeenBumped(
+  baseVersion: ServiceVersion,
+  headVersion: ServiceVersion
+): boolean {
+  return (
+    headVersion.major > baseVersion.major ||
+    headVersion.minor > baseVersion.minor ||
+    headVersion.patch > baseVersion.patch
+  )
+}
+function run(): void {
   try {
-    const ms: string = core.getInput('milliseconds')
-    core.debug(`Waiting ${ms} milliseconds ...`) // debug is only output if you set the secret `ACTIONS_STEP_DEBUG` to true
+    const headVersionString: string = core.getInput('headVer')
+    const baseVersionString: string = core.getInput('baseVer')
 
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    const headVersionData: string[] = headVersionString.split('.')
+    const baseVersionData: string[] = baseVersionString.split('.')
 
-    core.setOutput('time', new Date().toTimeString())
+    const headVersion: ServiceVersion = {
+      major: Number(headVersionData[0]),
+      minor: Number(headVersionData[1]),
+      patch: Number(headVersionData[2])
+    }
+
+    const baseVersion: ServiceVersion = {
+      major: Number(baseVersionData[0]),
+      minor: Number(baseVersionData[1]),
+      patch: Number(baseVersionData[2])
+    }
+
+    const bumped = hasBeenBumped(baseVersion, headVersion)
+
+    core.setOutput('bumped', bumped)
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
   }
