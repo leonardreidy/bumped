@@ -24,3 +24,11 @@ jobs:
         with:
           baseVer: "1.0.1"
           headVer: "1.0.0"
+  failing_test: # make sure the action works on a clean machine without building
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./
+        with:
+          baseVer: "1.0.0"
+          headVer: "1.0.0"
