@@ -16,19 +16,25 @@ jobs:
       - run: |
           npm run all
 
-  passing_test: # make sure the action works on a clean machine without building
+  bumped:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: ./
+        id: bumped
         with:
           baseVer: "1.0.1"
           headVer: "1.0.0"
-  failing_test: # make sure the action works on a clean machine without building
+      - run: |
+          echo "HEAD version does not match BASE version ${{ steps.bumped.outputs.bumped }}"
+  not_bumped:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: ./
+        id: not-bumped
         with:
           baseVer: "1.0.0"
           headVer: "1.0.0"
+      - run: |
+          echo "HEAD version does match BASE version ${{ steps.not_bumped.outputs.bumped }}"
