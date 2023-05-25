@@ -1,11 +1,16 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'bumped'
+description: 'Github Action to compare base and head version strings to determine whether the head version has been bumped'
+author: 'Leonard M Reidy'
 inputs:
-  milliseconds: # change this
+  baseVer:
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    description: 'Version string of BASE rev'
+  headVer:
+    required: true
+    description: 'Version string of HEAD rev'
+outputs:
+  bumped:
+    description: 'Boolean value indicating whether the HEAD version has been bumped'
 runs:
   using: 'node16'
   main: 'dist/index.js'
