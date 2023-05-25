@@ -21,4 +21,5 @@ jobs:
       - uses: actions/checkout@v3
       - uses: ./
         with:
-          milliseconds: 1000
+          baseVer: "1.0.1"
+          headVer: "1.0.0"
